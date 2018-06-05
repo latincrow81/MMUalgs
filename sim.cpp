@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <vector>
 #include <cmath>
@@ -11,6 +12,7 @@ int main(int argc, char* argv[])
 
     unsigned int pageBase;
     unsigned int * pageTable;
+    unsigned int input;
     
     vector <unsigned int> request;
 
@@ -75,13 +77,27 @@ int main(int argc, char* argv[])
         {
             /* print page # and base */
             cout << "Page # " << dec << i << " Base @ " << hex << pageTable[i] << endl;
-            i++;
+            
         }
 
-        delete[] pageTable;
-        cout << "Page table cleared from memory" << endl;
+        //delete[] pageTable;
+        //cout << "Page table cleared from memory" << endl;
 
     }
+
+    ifstream namefile(argv[5]);
+
+    while( namefile >> input)
+        request.push_back(input);
+        std::cout << "Read " << names.size()
+18
+              << " names successfully\n";
+19
+    std::copy(names.begin(), names.end(),
+20
+              output(std::cout, "\n"));
+
+
     
     return 0;
 }
