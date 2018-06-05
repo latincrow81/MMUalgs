@@ -3,6 +3,8 @@
 #include <sstream>
 #include <vector>
 #include <cmath>
+#include <string>
+
 
 using namespace std;
 
@@ -86,17 +88,10 @@ int main(int argc, char* argv[])
     }
 
     ifstream namefile(argv[5]);
-
-    while( namefile >> input)
+    while( namefile >> input){
         request.push_back(input);
-        std::cout << "Read " << names.size()
-18
-              << " names successfully\n";
-19
-    std::copy(names.begin(), names.end(),
-20
-              output(std::cout, "\n"));
-
+        cout << "Read " << request.size() << " addresses successfully\n";
+    }
 
     
     return 0;
