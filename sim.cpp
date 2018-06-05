@@ -1,3 +1,13 @@
+/** 
+ * Sistemas Operativos 2018/1
+ * Mauricio Escudero Restrepo
+ * mescude1@eafit.edu.co
+ * 201619407010
+ * 
+ * https://github.com/latincrow81/MMUalgs
+ * 
+ * */
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -5,6 +15,7 @@
 #include <array>
 #include <cmath>
 #include <string>
+#include <iterator>
 
 
 using namespace std;
@@ -14,12 +25,16 @@ int main(int argc, char* argv[])
     int addrBits, pageSize, frames, algorithm, pageNumber, escalarA, escalar;
 
     unsigned int pageBase;
-    unsigned int * pageTable;
+    unsigned int * pageTable; // array with all pageBases
     unsigned int * frameArray;
-    string page;
     
     vector <unsigned int> request;
+    vector <unsigned int> matchedPages;
+    
     string requestFile;
+    string page;
+
+    vector<string>::iterator it;
 
     // Check the number of parameters
     if (argc < 5) {
@@ -56,7 +71,7 @@ int main(int argc, char* argv[])
 
     escalarA = log2 (pageSize);
     escalar = addrBits - escalarA;
-    pageNumber = pow(2, escalar); 
+    pageNumber = pow(2, escalar); // number of available pages
     
     // Print the simulation parameters:
     cout << argv[1] << " bits address, " << argv[2] << " bytes pages, " << argv[3] << " frames, "<< " Using: " << algorithmName[algorithm] << std::endl;
@@ -89,6 +104,9 @@ int main(int argc, char* argv[])
         return 1;
     }
     
+
+    // process request file and store addresses
+
     ifstream namefile(requestFile);
     
     if (namefile.is_open())
@@ -97,6 +115,7 @@ int main(int argc, char* argv[])
         {
             unsigned int pageNumber = stoul(page,nullptr,0);
             request.push_back(pageNumber);
+
             cout << "page " << page << " registered" << '\n';
         }
         namefile.close();
@@ -105,6 +124,32 @@ int main(int argc, char* argv[])
         return 1;
     }
     
+    for(it = request.begin(); it != request.end(); it++ ){
+        cout << "Address " << *it << endl;
+    }
+
+    /* translate addresses to pages
+
+    for(int it = *request.begin(); it != *request.end(); it++ ){
+
+        unsigned int addressToMatch = it;
+        
+        cout << "started matching.." << endl;
+        
+        for(int i = 0; i <= pageNumber; i++)
+        {
+            unsigned int lower = pageTable[i];
+            unsigned int upper = pageTable[i++];
+
+            if(it >= lower && it < upper){ // address matched on pageTable
+                matchedPages.push_back(lower);
+                cout << "pushed" << lower << "to matched vector, on position " << i << endl;
+            }            
+        }
+    
+    }*/
+    
+
     istringstream ssFrames(argv[3]);
 
     if (!(ssFrames >> frames)) {
@@ -113,11 +158,14 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+
+
     frameArray = new (nothrow) unsigned int[frames];
 
     
     // simulate using FIFO
     if (algorithm == 0){
+
         
     }
 
